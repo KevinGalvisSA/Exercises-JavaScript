@@ -1,7 +1,7 @@
 import {getAllClientsNotPayment} from "./clients.js"
 import {getEmployeesByIdCode} from "./employees.js"
 
-//Ejercicio N.8
+//8. Devuelve un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
 export const getAllClientsUniques = async() =>{
     let res = await fetch("http://localhost:5505/payments")
     let data = await res.json()
@@ -18,7 +18,7 @@ export const getAllClientsUniques = async() =>{
     return dataUpdate;
 }
 
-//13 Devuelve un listado con todos los pagos que se realizaron en el año `2008` mediante `Paypal`. Ordene el resultado de mayor a menor.
+//13. Devuelve un listado con todos los pagos que se realizaron en el año `2008` mediante `Paypal`. Ordene el resultado de mayor a menor.
 
 export const getAllPaymentsIn2008WithPaypal = async() => {
     let res = await fetch("http://localhost:5505/payments")
@@ -39,7 +39,7 @@ export const getAllPaymentsIn2008WithPaypal = async() => {
     return dataUpdate;
 }
 
-//Ejercicio N.14
+//14. Devuelve un listado con todas las formas de pago que aparecen en la tabla `pago`. Tenga en cuenta que no deben aparecer formas de pago repetidas.
 
 export const getAllPaymentsWays = async() =>{
     let res = await fetch("http://localhost:5505/payments")
@@ -60,21 +60,12 @@ export const getAllCompletedPayments = async(code) =>{
     return data;
 }
 
-//Ejercicio N.3 (multitabla) y Ejercicio N.4
+//Ejercicio N.3 (multitabla)
 
 export const getAllClientsWithNotPaymentsWithManagersSales = async()=>{
     
     let res = await fetch("http://localhost:5505/payments")
     let client = await res.json();
-    for(const val of dataCliente){
-        var [client_code] = await getAllClientsNotPayment(val.code_client)
-        //var [employee] = await getEmployeesByIdCode(val.)
-        val.code_client = client_code
-    }
-    for(const val of dataCliente){
-        var [code_employee_sales_manager] = await getEmployeesByIdCode(val.code_client.code_employee_sales_manager)
-        val.code_client.code_employee_sales_manager = code_employee_sales_manager
-    }
     for(let i=0; i<client.length; i++){
         let {
             payment:payment,
@@ -122,3 +113,58 @@ export const getAllClientsWithNotPaymentsWithManagersSales = async()=>{
 
     return data;
 }
+
+//20. Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+
+export const getAllClientsWhoPayAndTheirManagerAndHisOfficeCity = async() => {
+    let res = await fetch("http://localhost:5505/payments")
+    let client = await res.json();
+    for(let i=0; i<client.length; i++){
+        let {
+            payment:payment,
+            limit_credit:limit_credit,
+            id_transaction:id_transaction,
+            date_payment:date_payment,
+            total:total,
+            id:id,
+            ...PaymentUpdate} = client[i]
+    
+            client[i] = PaymentUpdate
+        let [clientes] = await getAllClientsNotPayment(PaymentUpdate.code_client)
+        let {
+            client_code: client_code,
+            client_name: client_name,
+            phone: phone,
+            fax: fax,
+            address1: address1,
+            address2: address2,
+            region: region,
+            country: country,
+            postal_code: postal_code,
+            limit_credit: limit_credit_clone,
+            id: id_clone,
+            ...employeeUpdate
+        } = clientes
+        client[i] = employeeUpdate
+        let [employees] = await getEmployeesByIdCode(employeeUpdate.code_employee_sales_manager)
+        let {
+            employee_code:employee_code,
+            id:id_employee,
+            extension,
+            email,
+            code_office,
+            code_boss,
+            position,
+            ...employeeUpdateTrue
+        } = employees
+        var data = {...PaymentUpdate, ...employeeUpdate, ...employeeUpdateTrue}
+        client[i] = {
+            client_name: `${data.contact_name} ${data.contact_lastname}`,
+            employees_full_name: `${data.name} ${data.lastname1} ${data.lastname2}`,
+        }
+    }
+
+    return data;
+}
+
+//21. Devuelve el nombre de los clientes que **no** hayan hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.

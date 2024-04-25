@@ -1,4 +1,4 @@
-//Ejercicio N.7
+//7. Devuelve un listado con los distintos estados por los que puede pasar un pedido.
 export const getAllPossibleStatus = async()=>{
     let res = await fetch("http://localhost:5508/requests")
     let data = await res.json();
@@ -11,7 +11,7 @@ export const getAllPossibleStatus = async()=>{
     return dataUpdate;
 } 
 
-//Ejercicio N.9
+//9. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos que no han sido entregados a tiempo.
 
 export const getAllRejectedDeliver = async()=>{
     let res = await fetch("http://localhost:5508/requests");
@@ -29,7 +29,7 @@ export const getAllRejectedDeliver = async()=>{
     return delivering;
 }
 
-//10
+//10. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
 
 export const getAllRejectedDeliverTwoDays = async()=>{
     let res = await fetch("http://localhost:5508/requests");
@@ -54,7 +54,7 @@ export const getAllRejectedDeliverTwoDays = async()=>{
     }));
     return delivering;
 }
-//11
+//11. Devuelve un listado de todos los pedidos que fueron **rechazados** en `2009`.
 
 export const getAllRejectedDeliverInYears = async()=>{
     let res = await fetch("http://localhost:5508/requests?status=Rechazado");
@@ -62,7 +62,7 @@ export const getAllRejectedDeliverInYears = async()=>{
     let dataUpdate = []
     data.forEach(val => {
         let [year] = val.date_request.split("-")
-        if(year == "2008"){
+        if(year == "2009"){
             dataUpdate.push(val)
         } 
     })

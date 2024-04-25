@@ -2,7 +2,7 @@ import {getEmployeesByCode, getEmployeesByIdCode} from "./employees.js"
 import {getOfficesByCode} from "./offices.js"
 import {getAllCompletedPayments} from "./payments.js"
 
-//Ejercicio N.6
+//6. Devuelve un listado con el nombre de los todos los clientes españoles.
 export const getAllSpanishClients = async()=>{
     let res = await fetch("http://localhost:5501/clients")
     let data = await res.json()
@@ -18,7 +18,7 @@ export const getAllSpanishClients = async()=>{
     return dataUpdate
 } 
 
-//Ejercicio N.16
+//16. Devuelve un listado con todos los clientes que sean de la ciudad de `Madrid` y cuyo representante de ventas tenga el código de empleado `11` o `30`.
 
 export const getAllClients = async()=>{
     let res = await fetch("http://localhost:5501/clients?city=Madrid")
@@ -183,7 +183,7 @@ export const getAllClientsWithPaymensAndSalesManagmentInfo = async()=>{
     return client;
 } 
 
-//Ejercicio N.3 complemento (Filtrar los clientes por codigo)
+//Ejercicio N.3 (multitabla) complemento (Filtrar los clientes por codigo)
 export const getAllClientsNotPayment = async(code) =>{
     let res = await fetch(`http://localhost:5501/clients?client_code=${code}`)
     let data = await res.json()
