@@ -68,3 +68,41 @@ export const getAllRejectedDeliverInYears = async()=>{
     })
     return dataUpdate
 }
+
+//Filtrar los pedidos que no se entregaron a tiempo.
+export const getAllNotAtTimeDelivers = async() =>{
+    let res = await fetch(`http://localhost:5508/requests`)
+    let data = await res.json()
+    let dataUpdate = [];
+    let seenCodeClients = new Set();
+
+    data.forEach(val => {
+        if (new Date(val.date_delivery) > new Date(val.date_wait)) {
+            if (!seenCodeClients.has(val.code_client)) {
+                dataUpdate.push(val);
+                seenCodeClients.add(val.code_client);
+            }
+        }
+    });
+
+    return dataUpdate;
+}
+
+
+//Filtrar los datos de request
+
+export const getAllRequest = async(code) =>{
+    let res = await fetch(`http://localhost:5508/requests?code_client=${code}`)
+    let data = await res.json()
+    let info = {
+        code_client: undefined,
+        codes_requests: []
+    };
+    if (data !== undefined && data.length > 0) {
+        info.code_client = data[0].code_client;
+        for (let i of data) {
+            info.codes_requests.push(i.code_request);
+        }
+    }
+    return info;
+}
