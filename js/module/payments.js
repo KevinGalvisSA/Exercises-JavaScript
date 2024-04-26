@@ -114,7 +114,7 @@ export const getAllClientsWithNotPaymentsWithManagersSales = async()=>{
     return data;
 }
 
-//20. Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+//20. (multitabla) Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
 
 export const getAllClientsWhoPayAndTheirManagerAndHisOfficeCity = async() => {
     let res = await fetch("http://localhost:5505/payments")

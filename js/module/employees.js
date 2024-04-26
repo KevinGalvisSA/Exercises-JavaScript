@@ -1,4 +1,7 @@
 //3. Devuelve un litado con el nombre ,apellidos y email de los empleados
+
+import { getAllOficceCityAndMovil } from "./offices";
+
 //cuyo jefe tiene un codigo de jefe igual a 7
 export const getAllFullNameAndEmailsAndBoss = async () => {
     let res = await fetch("http://localhost:5502/employee?code_boss=7");
@@ -65,3 +68,35 @@ export const getEmployeesByIdCode = async (code) => {
     let data = await res.json(); 
     return data
 }
+
+//Ejercicio N.24 Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes.
+
+export const getAllEmployeesAndBoss = async () => {
+    let res = await fetch("http://localhost:5502/employee");
+    let data = await res.json();
+    let dataUpdate = data.map(val => {
+        return {
+            name: val.name,
+            fullLastname: `${val.lastname1} ${val.lastname2}`,
+            boss: val.code_boss
+        };
+    });
+    return dataUpdate;
+};
+
+//Ejercicio N.25 Devuelve un listado que muestre el nombre de cada empleados, el nombre de su jefe y el nombre del jefe de sus jefe.
+
+/*export const getAllEmployeesAndBossOfBoss = async () => {
+    let res = await fetch("http://localhost:5502/employee");
+    let employeer = await res.json();
+    for (let i = 0; i < data.length; i++) {
+        let {
+            id:id_code,
+            extension,
+            email,
+            code_office,
+            code_boss,
+            position,
+        ...employeesUpdate} = employeer[i]
+    };
+};*/
