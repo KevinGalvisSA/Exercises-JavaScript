@@ -1,8 +1,6 @@
-//3. Devuelve un litado con el nombre ,apellidos y email de los empleados
-
 import { getAllOficceCityAndMovil } from "./offices";
 
-//cuyo jefe tiene un codigo de jefe igual a 7
+//3. Devuelve un litado con el nombre ,apellidos y email de los empleados cuyo jefe tiene un codigo de jefe igual a 7
 export const getAllFullNameAndEmailsAndBoss = async () => {
     let res = await fetch("http://localhost:5502/employee?code_boss=7");
     let data = await res.json();

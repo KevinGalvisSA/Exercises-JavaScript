@@ -60,7 +60,7 @@ export const getAllCompletedPayments = async(code) =>{
     return data;
 }
 
-//Ejercicio N.3 (multitabla)
+//Ejercicio 19. Muestra el nombre de los clientes que **no** hayan realizado pagos junto con el nombre de sus representantes de ventas.
 
 export const getAllClientsWithNotPaymentsWithManagersSales = async()=>{
     

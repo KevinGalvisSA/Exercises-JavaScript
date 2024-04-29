@@ -130,7 +130,7 @@ export const getAllClientsWithSalesManagerName = async()=>{
     return client;
 }
 
-//2 (Consulta multitabla) //falta filtrar los datos que pide
+//Ejercicio 2. Muestra el nombre de los clientes que hayan realizado pagos junto con el nombre de sus representantes de ventas.
 
 export const getAllClientsWithPaymensAndSalesManagmentInfo = async()=>{
     
@@ -176,7 +176,7 @@ export const getAllClientsNotPayment = async(code) =>{
     return data;
 }
 
-//Ejercicio N.6 (multitabla)
+//Ejercicio 22. Lista la dirección de las oficinas que tengan clientes en `Fuenlabrada`.
 
 export const getAllAdressOfficesFunlabrada = async()=>{
     
@@ -226,7 +226,7 @@ export const getAllAdressOfficesFunlabrada = async()=>{
     return client;
 } 
 
-//10 (Multitabla) falta filtrar informacion
+//26. Devuelve el nombre de los clientes a los que no se les ha entregado a tiempo un pedido.
 export const getAllAdressNotAtTimeDeliverClients = async()=>{
     
     let res = await fetch("http://localhost:5501/clients")
