@@ -270,7 +270,7 @@ export const getAllCostumersWithGamas = async()=>{
     let res = await fetch("http://localhost:5501/clients")
     let clients = await res.json();
     let clientNames = clients.map(client => client.client_name);
-    
+
     let uniqueClients = clients.filter((client, index) => {
         return clientNames.indexOf(client.client_name) === index;
     });
@@ -284,8 +284,6 @@ export const getAllCostumersWithGamas = async()=>{
             groups[code_client] = []
         }
     })
-    
-
 
     for (let i = uniqueClients.length - 1; i >= 0; i--) {
         var {
@@ -308,103 +306,41 @@ export const getAllCostumersWithGamas = async()=>{
                 code_client: code_client.code_client,
                 client_name: uniqueClients[i].contact_name,
                 code_requests: code_client.codes_requests
-                
             }
         } else {
             uniqueClients.splice(i, 1);
         }
-        
-
-        var AllCodeRequestsLength = []
-        for(let i = 0; i<uniqueClients.length; i++){
-            AllCodeRequestsLength.push(uniqueClients[i].code_requests)
-            //lon = val.length
-           //AllCodeRequestsLength.push(val.length)
+    }
+    var AllCodeRequestsLength = []
+    for(let i = 0; i<uniqueClients.length; i++){
+        AllCodeRequestsLength.push(uniqueClients[i].code_requests)
+    }
+    var nuevo = new Set()
+    for(let i = 0; i<AllCodeRequestsLength.length; i++){
+        for(let j = 0; j<AllCodeRequestsLength[i].length; j++){
+            var requestsDetails = await getAllRequestDetails(AllCodeRequestsLength[i][j])
+            nuevo.add(requestsDetails.product_code)
+            uniqueClients[i]["single_code_request"] = requestsDetails.code_request
+    
+            continue
         }
-        
-        /*
-        
-        for(let i = 0; i<uniqueClients.length; i++){
-            for(let j of uniqueClients.code_requests){
-                let requestsDetails = await getAllRequestDetails(j)
-                uniqueClients[i] = {
-                    code_client: code_client.code_client,
-                    client_name: uniqueClients[i].contact_name,
-                    code_requests: code_client.codes_requests,
-                    product_code: requestsDetails.product_code 
-                }
-                continue
+        uniqueClients[i]["products"] = [...nuevo]
+        nuevo = new Set()    
+    }
+    var uniqueInitials = new Set();
+    for(let i = 0; i<uniqueClients.length; i++){
+        uniqueClients[i].products.forEach(subArray => {
+            if(subArray === undefined){
+                return
+            }
+            for(let i of subArray){
+                uniqueInitials.add(i);
             }
             
-        */
+        });
+        
+        uniqueClients[i].products = [...uniqueInitials];
     }
-        
-
-    return AllCodeRequestsLength;
-    /*
-    for(let i=0; i<client.length; i++){
-        var {
-            id:id_client,
-            limit_credit,
-            postal_code:postal_code_client,
-            country:country_client,
-            region:region_client,
-            address2:address2_client,
-            address1:address1_client,
-            fax,
-            phone,
-            city,
-            code_employee_sales_manager,
-            ...clientUpdate} = client[i]
-            client[i] = clientUpdate
-        names.push(clientUpdate.client_name)
-        console.log(!names.some(val => val == client[i].client_name))
-        
-        /*if () {
-            nuevo.push(clientUpdate);
-        }
-        /*
-        let code_client = await getAllRequest(clientUpdate.client_code)
-        clientUpdate.client_code = code_client
-        otro.push(clientUpdate)
-        /*
-        let {
-            date_request,
-            date_wait,
-            date_delivery,
-            status,
-            comment,
-            id,
-            ...requestsUpdate
-        } = code_client
-        let requestsDetails = await getAllRequestDetails(requestsUpdate.code_request)
-        let {
-            quantity,
-            unit_price,
-            line_number,
-            id:id_request_details,
-            ...requestsDetailsUpdate
-        } = requestsDetails
-        let products = await getAllProducts(requestsDetailsUpdate.product_code)
-        let {
-            name,
-            dimension,
-            provider,
-            description,
-            stock,
-            price_sale,
-            price_provider,
-            id:id_products,
-            ...productsUpdate
-        } = products
-        var data = {...clientUpdate, ...requestsUpdate, ...requestsDetailsUpdate, ...productsUpdate}
-        /*
-        client[i] = {
-            client_name: `${data.client_name}`,
-            employees_full_name: `${data.name} ${data.lastname1} ${data.lastname2}`,
-            employees_office_code: data.code_office,
-            city_employees: data.city
-        }
-        */
-        
-    }   
+    
+    return uniqueClients;
+}

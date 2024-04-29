@@ -71,32 +71,25 @@ export const getEmployeesByIdCode = async (code) => {
 
 //Ejercicio N.24 Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes.
 
-export const getAllEmployeesAndBoss = async () => {
-    let res = await fetch("http://localhost:5502/employee");
-    let data = await res.json();
-    let dataUpdate = data.map(val => {
-        return {
-            name: val.name,
-            fullLastname: `${val.lastname1} ${val.lastname2}`,
-            boss: val.code_boss
-        };
-    });
-    return dataUpdate;
-};
-
-//Ejercicio N.25 Devuelve un listado que muestre el nombre de cada empleados, el nombre de su jefe y el nombre del jefe de sus jefe.
-
-/*export const getAllEmployeesAndBossOfBoss = async () => {
-    let res = await fetch("http://localhost:5502/employee");
-    let employeer = await res.json();
-    for (let i = 0; i < data.length; i++) {
-        let {
-            id:id_code,
-            extension,
-            email,
-            code_office,
-            code_boss,
-            position,
-        ...employeesUpdate} = employeer[i]
+export const getEmployeesAndBosses = async () => {
+    let res2 = async (code) => {
+        let res = await fetch(`http://localhost:5502/employee?code_boss=${code}`);
+        let data = await res.json();
+        return data;
     };
-};*/
+    let res = await fetch(`http://localhost:5502/employee`);
+    let data = await res.json(); 
+    for(let i = 0; i<data.length; i++){
+        let {code_boss} = data[i]
+        let listBoss = []
+        if(!code_boss) continue
+        do{
+            let [boss] = await res2(code_boss)
+            code_boss = boss.code_boss
+            listBoss.push(boss)
+            console.log(listBoss)
+        }while(code_boss)
+        data[i].code_boss = listBoss
+    }
+    return ""
+};
