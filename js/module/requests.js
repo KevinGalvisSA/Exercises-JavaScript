@@ -88,7 +88,21 @@ export const getAllNotAtTimeDelivers = async() =>{
     return dataUpdate;
 }
 
-
+//Ejercicio N.12. Devuelve un listado de todos los pedidos que han sido **entregados** en el mes de enero de cualquier año. 
+export const getAllDeliveredPaymentsJanuary = async()=>{
+    let res = await fetch("http://localhost:5508/requests?status=Entregado");
+    let data = await res.json();
+    let dataUpdate = []
+    data.forEach(val => {
+        if (val.date_delivery!==null) {
+            let [year,month,days]=val.date_delivery.split("-");
+            if (month==="01") {
+                dataUpdate.push(val);
+            }
+        }
+    })
+    return dataUpdate
+}
 //Filtrar los datos de request
 
 export const getAllRequest = async(code) =>{

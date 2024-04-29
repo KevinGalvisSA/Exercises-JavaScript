@@ -264,27 +264,23 @@ export const getAllAdressNotAtTimeDeliverClients = async()=>{
 }    
 
 
-//Ejercicio N.11 (multitabla)
+//Ejercicio 27. Devuelve un listado de las diferentes gamas de producto que ha comprado cada cliente.
 
 export const getAllCostumersWithGamas = async()=>{
     let res = await fetch("http://localhost:5501/clients")
     let clients = await res.json();
     let clientNames = clients.map(client => client.client_name);
-
     let uniqueClients = clients.filter((client, index) => {
         return clientNames.indexOf(client.client_name) === index;
     });
-
     let clientCodes = uniqueClients.map(client => client.client_code);
     let groups = {};
-
     uniqueClients.forEach((client,i) =>{
         let code_client = client.client_code;
         if(!groups[code_client]){
             groups[code_client] = []
         }
     })
-
     for (let i = uniqueClients.length - 1; i >= 0; i--) {
         var {
             id:id_client,
@@ -321,7 +317,6 @@ export const getAllCostumersWithGamas = async()=>{
             var requestsDetails = await getAllRequestDetails(AllCodeRequestsLength[i][j])
             nuevo.add(requestsDetails.product_code)
             uniqueClients[i]["single_code_request"] = requestsDetails.code_request
-    
             continue
         }
         uniqueClients[i]["products"] = [...nuevo]
