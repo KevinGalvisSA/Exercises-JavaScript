@@ -2,7 +2,7 @@ import {getEmployByCode} from "./employees.js"
 import {getOfficesByCode} from "./offices.js"
 import {getAllCompletedPayments} from "./payments.js"
 
-//Ejercicio N.6 Devuelve un listado con el nombre de los todos los clientes españoles.
+//Ejercicio N.6
 export const getAllSpanishClients = async()=>{
     let res = await fetch("http://localhost:5501/clients")
     let data = await res.json()
@@ -17,9 +17,7 @@ export const getAllSpanishClients = async()=>{
     })
     return dataUpdate
 } 
-
-
-//Ejercicio N.16 Devuelve un listado con todos los clientes que sean de la ciudad de `Madrid` y cuyo representante de ventas tenga el código de empleado `11` o `30`.
+//Ejercicio N.16
 export const getAllClients = async()=>{
     let res = await fetch("http://localhost:5501/clients?city=Madrid")
     let data = await res.json()
@@ -32,7 +30,7 @@ export const getAllClients = async()=>{
     return dataUpdate
 } 
 
-//Ejercicio N.17 Obtén un listado con el nombre de cada cliente y el nombre y apellido de su representante de ventas.
+//Ejercicio N.17
 export const getAllClientsWithSalesManagerName = async()=>{
     
     let res = await fetch("http://localhost:5501/clients")
@@ -75,7 +73,7 @@ export const getAllClientsWithSalesManagerName = async()=>{
     return client;
 }
 
-//Ejercicio N.18 (multitabla) Muestra el nombre de los clientes que hayan realizado pagos junto con el nombre de sus representantes de ventas.
+//Ejercicio N.18
 export const getAllClientsWithPaymensAndSalesManagmentInfo = async()=>{
     let res=await fetch("http://localhost:5501/clients")
     let data =await res.json();
@@ -102,7 +100,7 @@ export const getAllClientsWithPaymensAndSalesManagmentInfo = async()=>{
 }
    
 
-//Ejercicio N.22 (multitabla) Lista la dirección de las oficinas que tengan clientes en `Fuenlabrada`.
+//Ejercicio N.22 
 export const getAllAdressOfficesFunlabrada = async()=>{
     let res = await fetch("http://localhost:5501/clients?city=Fuenlabrada")
     let client = await res.json();
@@ -150,7 +148,7 @@ export const getAllAdressOfficesFunlabrada = async()=>{
     return client;
 } 
 
-//Ejercicio N.23 Devuelve el nombre de los clientes y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+//Ejercicio N.23  
 export const getClientsEmploy = async() =>{
     let res = await fetch("http://localhost:5501/clients");
     let clients = await res.json();
@@ -220,8 +218,7 @@ export const getClientsEmploy = async() =>{
     return clients;
 }
 
-//Ejercicio N.27 Devuelve un listado de las diferentes gamas de producto que ha comprado cada cliente.
-
+//Ejercicio N.27
 export const getAllCostumersWithGamas = async()=>{
     let res = await fetch("http://localhost:5501/clients")
     let clients = await res.json();

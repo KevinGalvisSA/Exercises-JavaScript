@@ -1,5 +1,5 @@
 import {getAllClientsNotPayment} from "./clients.js"
-import {getEmployeesByIdCode} from "./employees.js"
+import {getEmployByCode} from "./employees.js"
 
 //8. Devuelve un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
 export const getAllClientsUniques = async() =>{
@@ -93,7 +93,7 @@ export const getAllClientsWithNotPaymentsWithManagersSales = async()=>{
             ...employeeUpdate
         } = clientes
         client[i] = employeeUpdate
-        let [employees] = await getEmployeesByIdCode(employeeUpdate.code_employee_sales_manager)
+        let [employees] = await getEmployByCode(employeeUpdate.code_employee_sales_manager)
         let {
             employee_code:employee_code,
             id:id_employee,

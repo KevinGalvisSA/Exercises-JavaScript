@@ -36,11 +36,3 @@ export class Mydetails extends HTMLElement{
         if(name == "text") this.marquee.textContent = now
     }
 }
-
-export class myDetails extends HTMLElement {
-    constructor(){
-        super();
-        this.attachShadow({mode: "open"});
-        this.shadowRoot.innerHTML = "hola"
-    }
-}

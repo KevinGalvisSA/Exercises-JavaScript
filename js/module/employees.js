@@ -1,6 +1,8 @@
-import { getAllClients } from "./client.js";
-
-// 3. Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe tiene un código de jefe igual a 7.
+import { 
+    getAllClients 
+} from "./clients.js";
+// 3. Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe 
+// tiene un código de jefe igual a 7.
 export const getAllEmployeesWithBossAndCodeSeven = async() =>{
     let res = await fetch("http://localhost:5502/employees?code_boss=7")
     let data = await res.json();
@@ -15,8 +17,8 @@ export const getAllEmployeesWithBossAndCodeSeven = async() =>{
     });
     return dataUpdate;
 }
-
-// 4. Devuelve el nombre del puesto, nombre, apellidos y email del jefe de la empresa.
+// 4. Devuelve el nombre del puesto, nombre, apellidos y email del jefe de la 
+// empresa.
 export const getBossFullNameAndEmail = async()=>{
     let res = await fetch("http://localhost:5502/employees");
     let data = await res.json();
@@ -26,11 +28,12 @@ export const getBossFullNameAndEmail = async()=>{
             dataUpdate.nombre = val.name
             dataUpdate.apellidos = `${val.lastname1} ${val.lastname2}`
             dataUpdate.email = val.email.match(/(?<=\[)[^\[\]]+@[^@\[\]]+(?=\])/)[0]
+            dataUpdate.puesto = val.position
         }
     });
+    
     return dataUpdate;
 }
-
 //5. Devuelve un listado con el nombre, apellidos y puesto de aquellos empleados 
 // que no sean representantes de ventas.
 export const getAllEmployeesNotSalesReps = async()=>{
@@ -44,27 +47,12 @@ export const getAllEmployeesNotSalesReps = async()=>{
             puesto: val.position
         })
     });
+    console.log(dataUpdate)
     return dataUpdate;
 }
-
-// Obtener la informacion de un empleado por su codigo
-export const getEmployByCode = async(code) =>{
-    let res = await fetch(`http://localhost:5502/employees?employee_code=${code}`);
-    let dataClients = await res.json();
-    return dataClients;
-}
-// Obtener la informacion de un empleado por su codigo
-export const getAllEmploy = async() =>{
-    let res = await fetch(`http://localhost:5502/employees`);
-    let data = await res.json();
-    return data;
-}
-
-
 //9. Devuelve un listado que muestre el nombre de cada empleados, 
 // el nombre de su jefe y el nombre del jefe de sus jefe.
-
-export const getAllEmployBossAndBossOfBoss = async()=>{
+export const getAll3 = async()=>{
     let dataEmployees = await getAllEmploy();
     for (let i = 0; i < dataEmployees.length; i++) {
         let {code_boss} = dataEmployees[i]
@@ -80,11 +68,9 @@ export const getAllEmployBossAndBossOfBoss = async()=>{
     }
     return dataEmployees[29];
 }
-
 // Consultas multitabla (Composición externa)
 // 12. Devuelve un listado con los datos de los empleados que no 
 // tienen clientes asociados y el nombre de su jefe asociado
-
 export const getAllEmployNotClients = async()=>{
     let dataClients = await getAllClients();
     let dataEmployees = await getAllEmploy();
@@ -118,4 +104,16 @@ export const getAllEmployNotClients = async()=>{
         employees.push(employeeUpdate)
     }
     return employees
+}
+// Obtener la informacion de un empleado por su codigo
+export const getEmployByCode = async(code) =>{
+    let res = await fetch(`http://localhost:5502/employees?employee_code=${code}`);
+    let dataClients = await res.json();
+    return dataClients;
+}
+// Obtener la informacion de un empleado por su codigo
+export const getAllEmploy = async() =>{
+    let res = await fetch(`http://localhost:5502/employees`);
+    let data = await res.json();
+    return data;
 }

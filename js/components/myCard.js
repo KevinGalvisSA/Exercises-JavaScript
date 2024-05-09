@@ -1,12 +1,16 @@
 import { 
     getAllClients, 
     getClientsEmploy 
-} from "../module/client.js";
+} from "../module/clients.js";
 import {
-    getAllEmployNotClients 
+    getAllEmployNotClients,
+    getAllEmployeesWithBossAndCodeSeven,
+    getBossFullNameAndEmail,
+    getAllEmployeesNotSalesReps 
 } from "../module/employees.js";
 import {
-    getAllOficceAndCodeCity 
+    getAllOficceAndCodeCity,
+    getAllOficceCityAndMovil 
 } from "../module/offices.js";
 
 export class Mycard extends HTMLElement{
@@ -17,7 +21,7 @@ export class Mycard extends HTMLElement{
             <link rel="stylesheet" href="../css/myCard.css">  
         `
     }
-
+    //Ejercicio N.1
     async getAllOficceAndCodeCityDesign(){
         let data = await getAllOficceAndCodeCity();
         data.forEach(val => {
@@ -35,6 +39,79 @@ export class Mycard extends HTMLElement{
             `;
         });
     }
+    //Ejercicio N.2
+    async getAllOficceCityAndMovilDesign(){
+        let data = await getAllOficceCityAndMovil();
+        data.forEach(val => {
+            this.shadowRoot.innerHTML += /*html*/`
+                <div class="report__card">
+                    <div class="card__title">
+                        <div>${val.city}</div>
+                    </div>
+                    <div class="card__body">
+                        <div class="body__marck">
+                            <p><b>Telefono: </b>${val.movil}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    //Ejercicio N.3
+    async getAllEmployeesWithBossAndCodeSevenDesign(){
+        let data = await getAllEmployeesWithBossAndCodeSeven();
+        data.forEach(val => {
+            this.shadowRoot.innerHTML += /*html*/`
+                <div class="report__card">
+                    <div class="card__title">
+                        <div>${val.nombre} ${val.apellidos}</div>
+                    </div>
+                    <div class="card__body">
+                        <div class="body__marck">
+                            <p><b>Correo Electronico: </b>${val.email}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    //Ejercicio N.4
+    async getBossFullNameAndEmailDesign(){
+        let data = await getBossFullNameAndEmail();
+        this.shadowRoot.innerHTML += /*html*/`
+            <div class="report__card">
+                <div class="card__title">
+                    <div>${data.nombre} ${data.apellidos}</div>
+                </div>
+                <div class="card__body">
+                    <div class="body__marck">
+                        <p><b>Correo Electronico: </b>${data.email}</p>
+                        <p><b>Puesto: </b>${data.puesto}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    };
+    
+    //Ejercicio N.5
+    async getAllEmployeesNotSalesRepsDesign(){
+        let data = await getAllEmployeesNotSalesReps();
+        data.forEach(val => {
+            this.shadowRoot.innerHTML += /*html*/`
+                <div class="report__card">
+                    <div class="card__title">
+                        <div>${val.nombre} ${val.apellidos}</div>
+                    </div>
+                    <div class="card__body">
+                        <div class="body__marck">
+                            <p><b>Puesto: </b>${val.puesto}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
     async getClientsEmployDesign(){
         let data = await getClientsEmploy();
         data.forEach(val => {
@@ -106,6 +183,10 @@ export class Mycard extends HTMLElement{
     }
     attributeChangedCallback(name, old, now) {
         if(name=="logic" && now=="offices_1") this.getAllOficceAndCodeCityDesign()
+        if(name=="logic" && now=="offices_2") this.getAllOficceCityAndMovilDesign()
+        if(name=="logic" && now=="employ_3") this.getAllEmployeesWithBossAndCodeSevenDesign()
+        if(name=="logic" && now=="employ_4") this.getBossFullNameAndEmailDesign()
+        if(name=="logic" && now=="employ_5") this.getAllEmployeesNotSalesRepsDesign()     
         if(name=="logic" && now=="client_6") this.getClientsEmployDesign()
         if(name=="logic" && now=="client_16") this.getAllClientsDesign()
         if(name=="logic" && now=="employ_12") this.getAllEmployNotClientsDesign()
