@@ -1,10 +1,13 @@
 import { 
-    getAllClientsFromMadridWithRepresentativeCode11Or30, 
+    getAllClients, 
     getClientsEmploy 
-} from "../module/clients.js";
+} from "../module/client.js";
 import {
     getAllEmployNotClients 
 } from "../module/employees.js";
+import {
+    getAllOficceAndCodeCity 
+} from "../module/offices.js";
 
 export class Mycard extends HTMLElement{
     constructor(){
@@ -13,6 +16,24 @@ export class Mycard extends HTMLElement{
         this.shadowRoot.innerHTML = /*html*/`
             <link rel="stylesheet" href="../css/myCard.css">  
         `
+    }
+
+    async getAllOficceAndCodeCityDesign(){
+        let data = await getAllOficceAndCodeCity();
+        data.forEach(val => {
+            this.shadowRoot.innerHTML += /*html*/`
+                <div class="report__card">
+                    <div class="card__title">
+                        <div>${val.city}</div>
+                    </div>
+                    <div class="card__body">
+                        <div class="body__marck">
+                            <p><b>Codigo de oficina: </b>${val.code_office}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
     }
     async getClientsEmployDesign(){
         let data = await getClientsEmploy();
@@ -32,8 +53,8 @@ export class Mycard extends HTMLElement{
             `;
         });
     }
-    async getAllClientsFromSpainAndRepresentative11Or30Design(){
-        let data = await getAllClientsFromMadridWithRepresentativeCode11Or30();
+    async getAllClientsDesign(){
+        let data = await getAllClients();
         data.forEach(val => {
             let money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(val.limit_credit);
             this.shadowRoot.innerHTML += /*html*/`
@@ -84,8 +105,9 @@ export class Mycard extends HTMLElement{
         return ["logic"];
     }
     attributeChangedCallback(name, old, now) {
+        if(name=="logic" && now=="offices_1") this.getAllOficceAndCodeCityDesign()
         if(name=="logic" && now=="client_6") this.getClientsEmployDesign()
-        if(name=="logic" && now=="client_16") this.getAllClientsFromSpainAndRepresentative11Or30Design()
+        if(name=="logic" && now=="client_16") this.getAllClientsDesign()
         if(name=="logic" && now=="employ_12") this.getAllEmployNotClientsDesign()
     }
 }

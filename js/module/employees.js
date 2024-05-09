@@ -1,93 +1,121 @@
-import { getAllOficceCityAndMovil } from "./offices";
+import { getAllClients } from "./client.js";
 
-//3. Devuelve un litado con el nombre ,apellidos y email de los empleados cuyo jefe tiene un codigo de jefe igual a 7
-export const getAllFullNameAndEmailsAndBoss = async () => {
-    let res = await fetch("http://localhost:5502/employee?code_boss=7");
+// 3. Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe tiene un código de jefe igual a 7.
+export const getAllEmployeesWithBossAndCodeSeven = async() =>{
+    let res = await fetch("http://localhost:5502/employees?code_boss=7")
     let data = await res.json();
-    let dataUpdate = data.map(val => {
-        return {
-            name: val.name,
-            fullLastname: `${val.lastname1} ${val.lastname2}`, // corrected concatenation
-            email: val.email.match(/(?<=\[)[^\[\]]+@[^@\[\]]+(?=\])/)[0]
-        };
+    let dataUpdate = [];
+    data.forEach(val => {
+        let [email] = val.email.match(/(?<=\[)[^\[\]]+@[^@\[\]]+(?=\])/)
+        dataUpdate.push({
+            nombre: val.name,
+            apellidos: `${val.lastname1} ${val.lastname2}`,
+            email
+        });
     });
     return dataUpdate;
-};
+}
 
-
-//4. Devuelve el nombre del puesto, nombre, aplleidos y email del jefe de la empresa
-
-export const getBossPositionNamesAndEmail = async () => {
-    let res = await fetch("http://localhost:5502/employee");
+// 4. Devuelve el nombre del puesto, nombre, apellidos y email del jefe de la empresa.
+export const getBossFullNameAndEmail = async()=>{
+    let res = await fetch("http://localhost:5502/employees");
     let data = await res.json();
-    let dataUpdate = []
+    let dataUpdate = {};
     data.forEach(val => {
         if(val.code_boss == null){
-            dataUpdate.push({
-                position: val.position,
-                name: val.name,
-                fullLastname: `${val.lastname1} ${val.lastname2}`,
-                email: val.email.match(/(?<=\[)[^\[\]]+@[^@\[\]]+(?=\])/)[0]
-            });
-        }    
+            dataUpdate.nombre = val.name
+            dataUpdate.apellidos = `${val.lastname1} ${val.lastname2}`
+            dataUpdate.email = val.email.match(/(?<=\[)[^\[\]]+@[^@\[\]]+(?=\])/)[0]
+        }
     });
     return dataUpdate;
-};
+}
 
-//5. Devuelve un listado con el nombre, apellidos y puesto de aquellos empleados que no sean representantes de ventas.
-export const getAllNotSalesRepresentEmployee = async () => {
-    let res = await fetch("http://localhost:5502/employee");
+//5. Devuelve un listado con el nombre, apellidos y puesto de aquellos empleados 
+// que no sean representantes de ventas.
+export const getAllEmployeesNotSalesReps = async()=>{
+    let res = await fetch("http://localhost:5502/employees?position_ne=Representante%20Ventas")
     let data = await res.json();
-    let dataUpdate = []
+    let dataUpdate = [];
     data.forEach(val => {
-        if(val.position != "Representante Ventas"){
-            dataUpdate.push({
-                position: val.position,
-                name: val.name,
-                fullLastname: `${val.lastname1} ${val.lastname2}`,
-            });
-        }    
+        dataUpdate.push({
+            nombre: val.name,
+            apellidos: `${val.lastname1} ${val.lastname2}`,
+            puesto: val.position
+        })
     });
     return dataUpdate;
-};
-
-//Filtar toda la informacion de un empleado por codigo
-
-export const getEmployeesByCode = async (code) => {
-    let res = await fetch(`http://localhost:5502/employee?employee_code=${code}`);
-    let data = await res.json(); 
-    return data
 }
 
-//Filtar toda la informacion de un empleado por codigo tomando su ID:
-
-export const getEmployeesByIdCode = async (code) => {
-    let res = await fetch(`http://localhost:5502/employee?employee_code=${code}`);
-    let data = await res.json(); 
-    return data
+// Obtener la informacion de un empleado por su codigo
+export const getEmployByCode = async(code) =>{
+    let res = await fetch(`http://localhost:5502/employees?employee_code=${code}`);
+    let dataClients = await res.json();
+    return dataClients;
+}
+// Obtener la informacion de un empleado por su codigo
+export const getAllEmploy = async() =>{
+    let res = await fetch(`http://localhost:5502/employees`);
+    let data = await res.json();
+    return data;
 }
 
-//Ejercicio N.24 Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes.
 
-export const getEmployeesAndBosses = async () => {
-    let res2 = async (code) => {
-        let res = await fetch(`http://localhost:5502/employee?code_boss=${code}`);
-        let data = await res.json();
-        return data;
-    };
-    let res = await fetch(`http://localhost:5502/employee`);
-    let data = await res.json(); 
-    for(let i = 0; i<data.length; i++){
-        let {code_boss} = data[i]
-        let listBoss = []
-        if(!code_boss) continue
+//9. Devuelve un listado que muestre el nombre de cada empleados, 
+// el nombre de su jefe y el nombre del jefe de sus jefe.
+
+export const getAllEmployBossAndBossOfBoss = async()=>{
+    let dataEmployees = await getAllEmploy();
+    for (let i = 0; i < dataEmployees.length; i++) {
+        let {code_boss} = dataEmployees[i]
+        let listBoss = [];
+        if(!code_boss) continue 
         do{
-            let [boss] = await res2(code_boss)
-            code_boss = boss.code_boss
-            listBoss.push(boss)
-            console.log(listBoss)
+            let searchedBoss = async() => await getEmployByCode(code_boss)
+            let [boos] = await searchedBoss()
+            code_boss = boos.code_boss
+            listBoss.push(boos)
         }while(code_boss)
-        data[i].code_boss = listBoss
+        dataEmployees[i].code_boss = listBoss;
     }
-    return ""
-};
+    return dataEmployees[29];
+}
+
+// Consultas multitabla (Composición externa)
+// 12. Devuelve un listado con los datos de los empleados que no 
+// tienen clientes asociados y el nombre de su jefe asociado
+
+export const getAllEmployNotClients = async()=>{
+    let dataClients = await getAllClients();
+    let dataEmployees = await getAllEmploy();
+    let code_employee_sales_manager = [...new Set(dataClients.map(val => val.code_employee_sales_manager))]
+    let employee_code = dataEmployees.map(val => val.employee_code)
+    let codes = [
+        code_employee_sales_manager,
+        employee_code
+    ]
+    let code = codes.reduce((resultado, array) => resultado.filter(elemento => !array.includes(elemento)).concat(array.filter(elemento => !resultado.includes(elemento))))
+    let employees = []
+    for (let i = 0; i < code.length; i++) {
+        let searchingEmployees = async() => await getEmployByCode(code[i])
+        let [employee] = await searchingEmployees()
+        if(!employee.code_boss) {
+            let {
+                code_boss,
+                ...employeeUpdate
+            } = employee
+            employeeUpdate.name_boss = employee.name;
+            employees.push(employeeUpdate)
+            continue
+        }
+        let searchedBoss = async() => await getEmployByCode(employee.code_boss)
+        let [boos] = await searchedBoss()
+        let {
+            code_boss,
+            ...employeeUpdate
+        } = employee
+        employeeUpdate.name_boss = boos.name;
+        employees.push(employeeUpdate)
+    }
+    return employees
+}

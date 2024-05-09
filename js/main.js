@@ -5,14 +5,16 @@ import {
 import { 
     getAllFullNameAndEmailsAndBoss,
     getBossPositionNamesAndEmail,
-    getAllNotSalesRepresentEmployee
+    getAllNotSalesRepresentEmployee,
+    getAllEmployeesAndBoss
 } from "./module/employees.js";
 import { 
     getAllClientsUniques,
     getAllPaymentsIn2008WithPaypal,
     getAllPaymentsWays,
     getAllCompletedPayments,
-    getAllClientsWithNotPaymentsWithManagersSales
+    getAllClientsWithNotPaymentsWithManagersSales,
+    getAllClientsWithNotPayments
 } from "./module/payments.js";
 import { 
     getAllSpanishClients,
@@ -22,7 +24,7 @@ import {
     getAllClientsWithPaymensAndSalesManagmentInfo,
     getAllClientsNotPayment,
     getAllAdressOfficesFunlabrada
-} from "./module/clients.js";
+} from "./module/client.js";
 import {
     getAllOrnamentalsAndStockProducts
 } from "./module/products.js";
@@ -30,7 +32,8 @@ import {
     getAllPossibleStatus,
     getAllRejectedDeliver,
     getAllRejectedDeliverTwoDays,
-    getAllRejectedDeliverInYears
+    getAllRejectedDeliverInYears,
+    getAllDeliveredPaymentsJanuary
 } from "./module/requests.js";
 
 console.log(await getAll());
