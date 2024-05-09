@@ -1,7 +1,9 @@
 import "./components/clock.js";
+import { detalles } from "./components/details.js";
 import { Mycard } from "./components/myCard.js";
-import { Mydetails } from "./components/myDetails.js";
+import { Mydetails, myDetails} from "./components/myDetails.js";
 
+customElements.define("mis-detalles", detalles)
 
 let btn = document.querySelectorAll("button")
 let report__menu = document.querySelectorAll(".report__menu button")
@@ -28,5 +30,3 @@ btn.forEach(val =>{
 })
 let [clients] = report__menu
 clients.click();
-customElements.define("my-details", Mydetails)
-customElements.define("my-card", Mycard)

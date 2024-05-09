@@ -1,4 +1,4 @@
-export class Mydetails extends HTMLElement{
+export class Detalles extends HTMLElement {
     myCard
     marquee
     details
@@ -34,13 +34,5 @@ export class Mydetails extends HTMLElement{
     attributeChangedCallback(name, old, now) {
         if(name == "logic") Mydetails.query = now
         if(name == "text") this.marquee.textContent = now
-    }
-}
-
-export class myDetails extends HTMLElement {
-    constructor(){
-        super();
-        this.attachShadow({mode: "open"});
-        this.shadowRoot.innerHTML = "hola"
     }
 }
