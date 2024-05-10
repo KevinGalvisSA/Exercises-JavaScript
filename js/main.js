@@ -3,31 +3,30 @@ import {
     getAllOficceCityAndMovil
 } from "./module/offices.js";
 import { 
-    getAllFullNameAndEmailsAndBoss,
-    getBossPositionNamesAndEmail,
-    getAllNotSalesRepresentEmployee,
-    getAllEmployeesAndBoss
+    getAllEmployeesWithBossAndCodeSeven,
+    getBossFullNameAndEmail,
+    getAllEmployeesNotSalesReps,
+    getAll3
 } from "./module/employees.js";
 import { 
-    getAllClientsUniques,
+    getAllCodeClientsUniquesPaymentsIn2008,
     getAllPaymentsIn2008WithPaypal,
     getAllPaymentsWays,
     getAllCompletedPayments,
     getAllClientsWithNotPaymentsWithManagersSales,
-    getAllClientsWithNotPayments
+    getAllClientsWhoPayAndTheirManagerAndHisOfficeCity
 } from "./module/payments.js";
 import { 
     getAllSpanishClients,
     getAllClients,
-    getAllClientsAndManagersWithTheOfficeCity,
     getAllClientsWithSalesManagerName,
     getAllClientsWithPaymensAndSalesManagmentInfo,
     getAllClientsNotPayment,
     getAllAdressOfficesFunlabrada
-} from "./module/client.js";
+} from "./module/clients.js";
 import {
     getAllOrnamentalsAndStockProducts
-} from "./module/products.js";
+} from "./module/product.js";
 import {
     getAllPossibleStatus,
     getAllRejectedDeliver,

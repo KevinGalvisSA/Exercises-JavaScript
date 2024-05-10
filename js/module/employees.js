@@ -111,7 +111,7 @@ export const getEmployByCode = async(code) =>{
     let dataClients = await res.json();
     return dataClients;
 }
-// Obtener la informacion de un empleado por su codigo
+// Obtener la informacion de un empleado
 export const getAllEmploy = async() =>{
     let res = await fetch(`http://localhost:5502/employees`);
     let data = await res.json();
