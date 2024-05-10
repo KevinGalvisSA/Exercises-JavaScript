@@ -17,6 +17,7 @@ export const getAllOficceCityAndMovil = async()=>{
     let data = await res.json()
     let dataUpdate = data.map(val =>{
         return{
+            city: val.city,
             code_office: val.code_office,
             movil: val.movil
         }
