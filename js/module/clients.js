@@ -11,6 +11,7 @@ export const getAllSpanishClients = async()=>{
         if(val.country == "Spain"){
             dataUpdate.push({
                 name: val.contact_name,
+                lastName: val.contact_lastname,
                 country: val.country
             })
         }
