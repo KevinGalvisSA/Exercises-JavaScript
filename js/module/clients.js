@@ -19,7 +19,7 @@ export const getAllSpanishClients = async()=>{
     return dataUpdate
 } 
 //Ejercicio N.16
-export const getAllClients = async()=>{
+export const getAllClientsFromMadridWithRepresentativeCode11Or30 = async()=>{
     let res = await fetch("http://localhost:5501/clients?city=Madrid")
     let data = await res.json()
     let dataUpdate = []
@@ -150,7 +150,7 @@ export const getAllAdressOfficesFunlabrada = async()=>{
 } 
 
 //Ejercicio N.23  
-export const getClientsEmploy = async() =>{
+export const getClientsAndRepresentativesWithOfficeCityOfRepresentative = async() =>{
     let res = await fetch("http://localhost:5501/clients");
     let clients = await res.json();
     for (let i = 0; i < clients.length; i++) {

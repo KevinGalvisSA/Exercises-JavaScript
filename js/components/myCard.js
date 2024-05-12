@@ -1,6 +1,6 @@
 import { 
-    getAllClients, 
-    getClientsEmploy,
+    getAllClientsFromMadridWithRepresentativeCode11Or30, 
+    getClientsAndRepresentativesWithOfficeCityOfRepresentative,
     getAllSpanishClients 
 } from "../module/clients.js";
 import {
@@ -152,7 +152,7 @@ export class Mycard extends HTMLElement{
                 <div class="report__card">
                     <div class="card__body">
                         <div class="body__marck">
-                            <p><b>${val}</b></p>
+                            <p><b>Estado: ${val}</b></p>
                         </div>
                     </div>
                 </div>
@@ -167,7 +167,7 @@ export class Mycard extends HTMLElement{
                 <div class="report__card">
                     <div class="card__body">
                         <div class="body__marck">
-                            <p><b>codigo: </b>${val}</p>
+                            <p><b>Codigo: </b>${val}</p>
                         </div>
                     </div>
                 </div>
@@ -327,7 +327,7 @@ export class Mycard extends HTMLElement{
     }
     //Ejercicio N.16
     async getAllClientsDesign(){
-        let data = await getAllClients();
+        let data = await getAllClientsFromMadridWithRepresentativeCode11Or30();
         data.forEach(val => {
             let money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(val.limit_credit);
             this.shadowRoot.innerHTML += /*html*/`
@@ -353,14 +353,14 @@ export class Mycard extends HTMLElement{
     }
     //Consultas Multi tabla
 
-    //Ejercicio N.7
-    async getClientsEmployDesign(){
-        let data = await getClientsEmploy();
+    //Ejercicio N.23
+    async getClientsAndRepresentativesWithOfficeCityOfRepresentativeDesign(){
+        let data = await getClientsAndRepresentativesWithOfficeCityOfRepresentative();
         data.forEach(val => {
             this.shadowRoot.innerHTML += /*html*/`
                 <div class="report__card">
                     <div class="card__title">
-                        <div>${val.client_name}</div>
+                        <div>Nombre Cliente: ${val.client_name}</div>
                     </div>
                     <div class="card__body">
                         <div class="body__marck">
@@ -382,7 +382,7 @@ export class Mycard extends HTMLElement{
             
                 <div class="report__card">
                     <div class="card__title">
-                        <div>${val.name} ${val.lastname1} ${val.lastname2} # ${val.employee_code}</div>
+                        <div>Empleado: ${val.name} ${val.lastname1} ${val.lastname2} # ${val.employee_code}</div>
                     </div>
                     <div class="card__body">
                         <div class="body__marck">
@@ -420,8 +420,8 @@ export class Mycard extends HTMLElement{
         if(name=="logic" && now=="products_15") this.getAllOrnamentalsAndStockProductsDesign()   
         if(name=="logic" && now=="client_16") this.getAllClientsDesign() 
         // Multitabla
-        if(name=="logic" && now=="client_1_7") this.getClientsEmployDesign()
+        if(name=="logic" && now=="client_23") this.getClientsAndRepresentativesWithOfficeCityOfRepresentativeDesign()
         // Composición externa
-        if(name=="logic" && now=="employ_2_12") this.getAllEmployNotClientsDesign()
+        if(name=="logic" && now=="employ_30") this.getAllEmployNotClientsDesign()
     }
 }

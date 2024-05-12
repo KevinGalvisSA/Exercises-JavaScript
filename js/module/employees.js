@@ -1,5 +1,5 @@
 import { 
-    getAllClients 
+    getAllClientsFromMadridWithRepresentativeCode11Or30 
 } from "./clients.js";
 // 3. Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe 
 // tiene un código de jefe igual a 7.
@@ -72,7 +72,7 @@ export const getAll3 = async()=>{
 // 12. Devuelve un listado con los datos de los empleados que no 
 // tienen clientes asociados y el nombre de su jefe asociado
 export const getAllEmployNotClients = async()=>{
-    let dataClients = await getAllClients();
+    let dataClients = await getAllClientsFromMadridWithRepresentativeCode11Or30();
     let dataEmployees = await getAllEmploy();
     let code_employee_sales_manager = [...new Set(dataClients.map(val => val.code_employee_sales_manager))]
     let employee_code = dataEmployees.map(val => val.employee_code)
